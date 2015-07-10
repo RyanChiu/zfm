@@ -1,0 +1,30 @@
+<!doctype html>
+<html ng-app="zfmClient">
+<head>
+<script src="../../libs/angular-1.4.1/angular.min.js"></script>
+<script src="../../libs/angular-1.4.1/angular-sanitize.min.js"></script>
+<script src="zfmclient.js"></script>
+</head>
+<body>
+<div ng-controller="zfmController">
+	<div ng-show="false">
+		<div>[TEST ZONE]</div>
+		<input type="text" ng-model="rq" placeholder="request keyword">
+		<button type="submit" ng-click="ask()">ask</button><br/>
+		<textarea style="width:90%;height:60px;margin-top:3px;">{{answers}}</textarea>
+		<hr>
+	</div>
+	<div>
+	<table style="width:90%;" ng-show="list !== undefined">
+		<caption ng-bind="rlDir"></caption>
+	    <tr>
+	        <td style="border-bottom:solid 1px;" ng-repeat="(key, value) in list[0]" ng-bind="key" ng-hide="key == 'name' || key == 'type_name'"></td>
+	    </tr>
+        <tr ng-repeat="row in list">
+            <td ng-repeat="(key, value) in row" ng-bind-html="value" ng-click="dirClick(value, row);" ng-hide="key == 'name' || key == 'type_name'"></td>
+        </tr>
+	</table>
+	</div>
+</div>
+</body>
+</html>
