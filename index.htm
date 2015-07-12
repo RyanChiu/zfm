@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" ng-app="zfmClient">
+<head>
+    <meta charset="utf-8">
+    <title>Z-FILE-MANAGER-PANEL</title>
+    <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="libs/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="libs/stylesheets/theme.css">
+    <link rel="stylesheet" type="text/css" href="libs/stylesheets/premium.css">
+    <script src="libs/angular-1.4.1/angular.min.js"></script>
+	<script src="libs/angular-1.4.1/angular-sanitize.min.js"></script>
+	<script src="zfmclient.js"></script>
+</head>
+<body class=" theme-blue">
+
+    <style type="text/css">
+        #line-chart {
+            height:300px;
+            width:800px;
+            margin: 0px auto;
+            margin-top: 1em;
+        }
+        .navbar-default .navbar-brand, .navbar-default .navbar-brand:hover { 
+            color: #fff;
+        }
+    </style>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+
+  <!--[if lt IE 7 ]> <body class="ie ie6"> <![endif]-->
+  <!--[if IE 7 ]> <body class="ie ie7 "> <![endif]-->
+  <!--[if IE 8 ]> <body class="ie ie8 "> <![endif]-->
+  <!--[if IE 9 ]> <body class="ie ie9 "> <![endif]-->
+  <!--[if (gt IE 9)|!(IE)]><!--> 
+   
+  <!--<![endif]-->
+
+    <div class="navbar navbar-default" role="navigation">
+    
+        <div class="navbar-header">
+          <a class="" href="index.html">
+            <span class="navbar-brand"><span class="fa fa-paper-plane"></span> Z-FILE-MANAGER-PANEL　</span>
+          </a>
+        </div>
+
+        <div class="navbar-collapse collapse" style="height: 1px;">
+          <ul id="main-menu" class="nav navbar-nav navbar-right">
+            <li class="dropdown hidden-xs">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-user padding-right-small" style="position:relative;top: 3px;"></span> unkonw
+                    <i class="fa fa-caret-down"></i>
+                </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    <div class="sidebar-nav" ng-controller="zfmController">
+	    <ul>
+		    <li><a href="#" data-target=".dashboard-menu" class="nav-header" data-toggle="collapse">
+		        <i class="fa fa-fw fa-folder-open"></i> Directories<i class="fa fa-collapse"></i></a></li>
+		    <li><ul class="dashboard-menu nav nav-list collapse in">
+		        <li ng-repeat="dir in dirs" ng-bind-html="dir"></li>
+		    </ul></li>
+	    </ul>
+    </div>
+
+	<div class="content" ng-controller="zfmController">
+		<div class="header">
+
+			<h1 class="page-title" ng-bind="rlDir">Current Path</h1>
+
+		</div>
+		<div class="main-content">
+
+			<div class="btn-toolbar list-toolbar">
+				<button class="btn btn-primary">
+					<i class="fa fa-plus"></i> Upload
+				</button>
+				<button class="btn btn-default">Donwload</button>
+				<button class="btn btn-default">Rename</button>
+				<div class="btn-group"></div>
+			</div>
+			<div>
+				<div ng-show="false">
+					<div>[TEST ZONE]</div>
+					<input type="text" ng-model="rq" placeholder="request keyword">
+					<button type="submit" ng-click="ask()">ask</button>
+					<br />
+					<textarea style="width: 90%; height: 60px; margin-top: 3px;">{{answers}}</textarea>
+					<hr>
+				</div>
+				<div>
+					<table class="table" ng-show="list !== undefined">
+						<thead>
+							<tr>
+								<th	ng-repeat="(key, value) in list[0]" ng-bind="key"
+									ng-hide="key == 'name' || key == 'type_name'"></th>
+								 <th style="width: 3.5em;"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="row in list">
+								<td ng-repeat="(key, value) in row" ng-bind-html="value"
+									ng-click="dirClick(value, row);"
+									ng-hide="key == 'name' || key == 'type_name'"></td>
+								<td>
+						          <a href="#modify"><i class="fa fa-pencil"></i></a>
+						          <i class="fa fa-clock-o"></i>
+						      </td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal small fade" id="myModal" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">×</button>
+							<h3 id="myModalLabel">Delete Confirmation</h3>
+						</div>
+						<div class="modal-body">
+							<p class="error-text">
+								<i class="fa fa-warning modal-icon"></i>Are you sure you want to
+								delete the user?<br>This cannot be undone.
+							</p>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-default" data-dismiss="modal"
+								aria-hidden="true">Cancel</button>
+							<button class="btn btn-danger" data-dismiss="modal">Delete</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<footer>
+				<hr>
+
+				<!-- Purchase a site license to remove this link from the footer: http://www.portnine.com/bootstrap-themes -->
+				<p class="pull-right">
+					A <a href="http://www.portnine.com/bootstrap-themes"
+						target="_blank">Free Bootstrap Theme</a> by <a
+						href="http://www.portnine.com" target="_blank">Portnine</a>
+				</p>
+				<p>
+					© 2014 <a href="http://www.portnine.com" target="_blank">Portnine</a>
+				</p>
+			</footer>
+		</div>
+	</div>
+
+</body></html>
