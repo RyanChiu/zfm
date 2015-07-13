@@ -1,5 +1,5 @@
 var zfm = angular.module("zfmClient", ['ngSanitize']);
-zfm.controller('zfmController', ['$scope', '$http', function($scope, $http) {
+zfm.controller('zfmController', function($scope, $http) {
 	$scope.url = "zfmsvr.php";
 	
 	$scope.idxCurBM = 0;
@@ -133,4 +133,4 @@ zfm.controller('zfmController', ['$scope', '$http', function($scope, $http) {
 	$scope.ask();
 	$scope.rq = "list";
 	$scope.ask();
-}]);
+});
