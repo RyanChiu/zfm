@@ -6,10 +6,15 @@ $disk_config = new DISK_CONFIG();
 
 $data = file_get_contents("php://input");
 $objData = json_decode($data);
+if (isset($objData->bm)) {
+	$objData->bm = intval($objData->bm);
+} else {
+	$objData->bm = 0;
+}
 
 function getSpace($dir) {
-	$free = disk_free_space($dir) / 1024 / 1024;
-	$total = disk_total_space($dir) / 1024 / 1024;
+	$free = disk_free_space($dir);
+	$total = disk_total_space($dir);
 	return array(
 		"dir" => $dir,
 		"total" => $total,
@@ -22,19 +27,14 @@ function getList($dir) {
 }
 
 switch ($objData->rq) {
-	case 'space':
-		echo json_encode(array(
-			$objData->rq => getSpace($disk_config->dirs[0])
-		));
-		break;
 	case 'dirs':
 		echo json_encode(array(
 			$objData->rq => $disk_config->dirs
 		));
 		break;
 	case 'list':
-		$dst_dir = isset($objData->dir) ? $objData->dir : "";
-		$dir_list = dir_list($disk_config->dirs[0] . '/' . $dst_dir);
+		$dst_dir = $disk_config->dirs[$objData->bm]["path"] . "/" . (isset($objData->dir) ? $objData->dir : "");
+		$dir_list = dir_list($dst_dir);
 		array_push($dir_list, array(
 			'file' => '..',
 			'name' => '..',
@@ -51,8 +51,8 @@ switch ($objData->rq) {
 	case 'all':
 		echo json_encode(array(
 			$objData->rq => array(
-				"files" => dir_list($disk_config->dirs[0]),
-				"spaces" => getSpace($disk_config->dirs[0])
+				"files" => dir_list($disk_config->dirs[$objData->bm]["path"]),
+				"spaces" => getSpace($disk_config->dirs[$objData->bm]["path"])
 			)
 		));
 		break;

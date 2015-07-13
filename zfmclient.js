@@ -2,6 +2,7 @@ var zfm = angular.module("zfmClient", ['ngSanitize']);
 zfm.controller('zfmController', ['$scope', '$http', function($scope, $http) {
 	$scope.url = "zfmsvr.php";
 	
+	$scope.idxCurBM = 0;
 	$scope.rlDir = ".";
 	$scope.dstDir = "";
 	
@@ -36,6 +37,7 @@ zfm.controller('zfmController', ['$scope', '$http', function($scope, $http) {
 				rtn_dir += "/";
 			}
 		}
+		if (rtn_dir == "./.") return ".";
 		return rtn_dir;
 	}
 		
@@ -53,12 +55,20 @@ zfm.controller('zfmController', ['$scope', '$http', function($scope, $http) {
 		return true;
 	}
 	
+	$scope.bmClick = function(idxBM) {
+		$scope.idxCurBM = idxBM;
+		$scope.rlDir = ($scope.dstDir = ".");
+		$scope.askFor("list");
+		return true;
+	}
+	
 	/**
 	 * to server
 	 */
 	$scope.askFor = function(rq) {
 		$http.post($scope.url, {
 			"rq" : rq,
+			"bm" : $scope.idxCurBM,
 			"dir" : $scope.rlDir + "/" + $scope.dstDir
 		})
 		.success(function(data, status) {
@@ -70,7 +80,15 @@ zfm.controller('zfmController', ['$scope', '$http', function($scope, $http) {
 					for (var row in list) {
 						var date = new Date();
 						if (list[row]["type"] == "dir") {
-							list[row]["file"] = '<a href="#' + (date.getMilliseconds() + row) + '">[' + list[row]["name"] + ']</a>';
+							if (list[row]["name"] == "..") {
+								list[row]["file"] = '<a href="#' + (date.getMilliseconds() + row) + '"><i class="fa fa-level-up"></i> [' + list[row]["name"] + ']</a>';
+							} else {
+								list[row]["file"] = '<a href="#' + (date.getMilliseconds() + row) + '"><i class="fa fa-folder"></i> [' + list[row]["name"] + ']</a>';
+							}
+						} else if (list[row]["type"] == "file") {
+							list[row]["file"] = '<i class="fa fa-file-o"></i> ' + list[row]["name"];
+						} else if (list[row]["type"] == "link") {
+							list[row]["file"] = '<i class="fa fa-link"></i> ' + list[row]["name"];
 						}
 					}
 					$scope.list = $scope.sortJson(list, "type_name", true);
@@ -78,6 +96,16 @@ zfm.controller('zfmController', ['$scope', '$http', function($scope, $http) {
 						$scope.rlDir = $scope.rlDir + "/" + $scope.dstDir;
 					}
 					$scope.rlDir = $scope.shrinkRlDir();
+					break;
+				case 'dirs':
+					var dirs = data.dirs;
+					for (var i in dirs) {
+						dirs[i]["alias"] = 
+							'<a href="#"><span class="fa fa-bookmark-o"> ' 
+							+ dirs[i]["alias"] + '</span></a>';
+						dirs[i]["idx"] = i;
+					}
+					$scope.dirs = dirs;
 					break;
 				}
 				break;
@@ -101,6 +129,8 @@ zfm.controller('zfmController', ['$scope', '$http', function($scope, $http) {
 		$scope.rq = "";
 	}
 	
+	$scope.rq = "dirs";
+	$scope.ask();
 	$scope.rq = "list";
 	$scope.ask();
 }]);
