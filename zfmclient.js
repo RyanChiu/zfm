@@ -1,5 +1,5 @@
-var zfm = angular.module("zfmClient", ['ngSanitize']);
-zfm.controller('zfmController', function($scope, $http) {
+var zfm = angular.module("zfmClient", ['ngSanitize', 'ngDialog']);
+zfm.controller('zfmController', function($scope, $http, ngDialog) {
 	$scope.url = "zfmsvr.php";
 	
 	$scope.idxCurBM = 0;
@@ -9,6 +9,13 @@ zfm.controller('zfmController', function($scope, $http) {
 	/**
 	 * from local
 	 */
+	$scope.open = function (templateId) {
+		ngDialog.open({
+			template: templateId,
+			showClose: false
+		});
+	};
+	
 	$scope.sortJson = function(json, key, asc) {
 		return json.sort(function(a, b) {
 			var x = a[key]; var y = b[key];
@@ -46,7 +53,7 @@ zfm.controller('zfmController', function($scope, $http) {
 			$scope.dstDir = row.name;
 			if (row.name == "..") {
 				if ($scope.rlDir == ".") {
-					alert("not allowed!");
+					$scope.open('ngDialogTemplateWarning');
 					return false;
 				}
 			}
