@@ -69,6 +69,11 @@ zfm.controller('zfmController', function($scope, $http, ngDialog) {
 		return true;
 	}
 	
+	$scope.uploadClick = function() {
+		$scope.open("ngDialogTemplateWarning");
+		return false;
+	}
+	
 	/**
 	 * to server
 	 */

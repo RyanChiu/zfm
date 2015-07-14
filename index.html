@@ -76,18 +76,16 @@
 		<div class="main-content">
 
 			<div class="btn-toolbar list-toolbar">
-				<button class="btn btn-primary">
+				<button class="btn btn-primary" ng-click="uploadClick();">
 					<i class="fa fa-plus"></i> Upload
 				</button>
-				<button class="btn btn-default">Donwload</button>
-				<button class="btn btn-default">Rename</button>
 				<div class="btn-group"></div>
 			</div>
 			<div>
 				<div ng-show="false">
 					<div>[TEST ZONE]</div>
 					<input type="text" ng-model="rq" placeholder="request keyword">
-					<button type="submit" ng-click="ask()">ask</button>
+					<button type="submit" ng-click="ask();">ask</button>
 					<br />
 					<textarea style="width: 90%; height: 60px; margin-top: 3px;">{{answers}}</textarea>
 					<hr>
@@ -144,7 +142,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
                         aria-hidden="false">×</button>
-                    <h3 id="myModalLabel">Delete Confirmation</h3>
+                    <h3>Delete Confirmation</h3>
                 </div>
                 <div class="modal-body">
                     <p class="error-text">
@@ -167,11 +165,11 @@
        <div class="small modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 id="myModalLabel">Forbidden warning</h3>
+                    <h3>Forbidden warning</h3>
                 </div>
                 <div class="modal-body">
                     <p class="error-text">
-                        <i class="fa fa-warning modal-icon"></i> It's not allowed to go to the upper folder in this case.
+                        <i class="fa fa-warning modal-icon"></i> It's not allowed in this case.
                     </p>
                 </div>
                 <div class="modal-footer">
