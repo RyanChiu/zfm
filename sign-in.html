@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="sinClient">
 <head>
 	<meta charset="utf-8">
 	<title>Z-FILE-MANAGER-PANEL</title>
@@ -7,8 +7,12 @@
 	<link rel="stylesheet" type="text/css" href="libs/font-awesome/css/font-awesome.css">
 	<link rel="stylesheet" type="text/css" href="libs/stylesheets/theme.css">
 	<link rel="stylesheet" type="text/css" href="libs/stylesheets/premium.css">
+	<script src="libs/angular-1.4.1/angular.min.js"></script>
+    <script src="libs/angular-1.4.1/angular-cookies.min.js"></script>
+    <script src="libs/md5.min.js"></script>
+    <script src="sign-in.js"></script>
 </head>
-<body class=" theme-blue">
+<body class=" theme-blue" ng-controller="sinController">
 	<style type="text/css">
 	#line-chart {
 		height: 300px;
@@ -37,7 +41,7 @@
 	<div class="navbar navbar-default" role="navigation">
 		<div class="navbar-header">
 			<a class="" href="index.html"> <span class="navbar-brand"><span
-					class="fa fa-paper-plane"></span> Z-FILE-MANAGER-PANEL </span>
+				class="fa fa-paper-plane"></span> Z-FILE-MANAGER-PANEL </span>
 			</a>
 		</div>
 
@@ -54,17 +58,17 @@
 				<form>
 					<div class="form-group">
 						<label>Username</label> <input type="text"
-							class="form-control span12">
+							class="form-control span12" ng-model="username">
 					</div>
 					<div class="form-group">
 						<label>Password</label> <input type="password"
-							class="form-control span12">
+							class="form-control span12" ng-model="password">
 					</div>
-					<a href="index.html" class="btn btn-primary pull-right">Sign In</a>
+					<a href="#" class="btn btn-primary pull-right" ng-click="signMeIn()">Sign In</a>
 					<!--  
 					<label class="remember-me"><input type="checkbox">
 						Remember me</label>
-					-->
+					-->{{result}}
 					<div class="clearfix"></div>
 				</form>
 			</div>

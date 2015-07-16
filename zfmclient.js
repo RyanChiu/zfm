@@ -1,5 +1,7 @@
-var zfm = angular.module("zfmClient", ['ngSanitize', 'ngCookies', 'ngDialog']);
-zfm.controller('zfmController', function($window, $location, $cookieStore, $scope, $http, ngDialog) {
+var zfm = angular
+	.module("zfmClient", ['ngSanitize', 'ngCookies', 'ngDialog']);
+
+zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, ngDialog) {
 	$scope.url = "zfmsvr.php";
 	
 	$scope.idxCurBM = 0;
@@ -150,20 +152,21 @@ zfm.controller('zfmController', function($window, $location, $cookieStore, $scop
 		$scope.rq = "";
 	}
 	
+	$scope.leave = function() {
+		$cookieStore.remove("username");
+		$window.location.href = "sign-in.html";
+	}
 	/**
-	 * cookies initial part
+	 * verified if sign in approved
 	 */
 	$scope.username = $cookieStore.get("username");
-	$scope.password = $cookieStore.get("password");
 	if (angular.isUndefined($scope.username) || $scope.username == "") {
 		$window.location.href = "sign-in.html";
 		return;
 	} else {
-		
+		$scope.rq = "dirs";
+		$scope.ask();
+		$scope.rq = "list";
+		$scope.ask();
 	}
-	
-	$scope.rq = "dirs";
-	$scope.ask();
-	$scope.rq = "list";
-	$scope.ask();
 });
