@@ -1,5 +1,5 @@
-var zfm = angular.module("zfmClient", ['ngSanitize', 'ngDialog']);
-zfm.controller('zfmController', function($scope, $http, ngDialog) {
+var zfm = angular.module("zfmClient", ['ngSanitize', 'ngCookies', 'ngDialog']);
+zfm.controller('zfmController', function($window, $location, $cookieStore, $scope, $http, ngDialog) {
 	$scope.url = "zfmsvr.php";
 	
 	$scope.idxCurBM = 0;
@@ -9,10 +9,19 @@ zfm.controller('zfmController', function($scope, $http, ngDialog) {
 	/**
 	 * from local
 	 */
-	$scope.open = function (templateId) {
+	$scope.openDialog = function(template) {
 		ngDialog.open({
-			template: templateId,
+			template: template,
 			showClose: false
+		});
+	};
+	
+	$scope.openPage = function(template) {
+		ngDialog.open({
+			template: template,
+			showClose: false,
+			overlay: false,
+			closeByEscape: false
 		});
 	};
 	
@@ -53,7 +62,7 @@ zfm.controller('zfmController', function($scope, $http, ngDialog) {
 			$scope.dstDir = row.name;
 			if (row.name == "..") {
 				if ($scope.rlDir == ".") {
-					$scope.open('ngDialogTemplateWarning');
+					$scope.openDialog('ngDialogTemplateWarning');
 					return false;
 				}
 			}
@@ -70,7 +79,7 @@ zfm.controller('zfmController', function($scope, $http, ngDialog) {
 	}
 	
 	$scope.uploadClick = function() {
-		$scope.open("ngDialogTemplateWarning");
+		$scope.openDialog("ngDialogTemplateWarning");
 		return false;
 	}
 	
@@ -139,6 +148,18 @@ zfm.controller('zfmController', function($scope, $http, ngDialog) {
 	$scope.ask = function() {
 		$scope.askFor($scope.rq);
 		$scope.rq = "";
+	}
+	
+	/**
+	 * cookies initial part
+	 */
+	$scope.username = $cookieStore.get("username");
+	$scope.password = $cookieStore.get("password");
+	if (angular.isUndefined($scope.username) || $scope.username == "") {
+		$window.location.href = "sign-in.html";
+		return;
+	} else {
+		
 	}
 	
 	$scope.rq = "dirs";

@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="libs/stylesheets/premium.css">
     <link rel="stylesheet" type="text/css" href="libs/ngDialog-master/css/ngDialog.css">
     <script src="libs/angular-1.4.1/angular.min.js"></script>
+    <script src="libs/angular-1.4.1/angular-cookies.min.js"></script>
 	<script src="libs/angular-1.4.1/angular-sanitize.min.js"></script>
 	<script src="libs/ngDialog-master/js/ngDialog.js"></script>
 	<script src="zfmclient.js"></script>
@@ -48,9 +49,10 @@
         <div class="navbar-collapse collapse" style="height: 1px;">
           <ul id="main-menu" class="nav navbar-nav navbar-right">
             <li class="dropdown hidden-xs">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-user padding-right-small" style="position:relative;top: 3px;"></span> unkonw
-                    <i class="fa fa-caret-down"></i>
+                <a href="sign-in.html" class="dropdown-toggle" data-toggle="dropdown" id="linkSignOut">
+                    <!-- <span class="glyphicon glyphicon-user padding-right-small" style="position:relative;top: 3px;"></span> -->
+                    Leave
+                    <i class="fa fa-sign-out"></i>
                 </a>
             </li>
           </ul>
