@@ -34,6 +34,15 @@ function read_all_files($root = '.'){
 }
 
 /**
+* from "http://php.net/manual/es/function.filesize.php"
+*/
+function human_filesize($bytes, $decimals = 2) {
+  $sz = 'BKMGTP';
+  $factor = floor((strlen($bytes) - 1) / 3);
+  return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+}
+
+/**
  * from "http://php.net/manual/zh/function.readdir.php"
  */
 function permission($filename)
@@ -83,10 +92,12 @@ function dir_list($dir)
         {
             $filename = $dir . $object;
             $filetype = filetype($filename);
+            $filesize = sprintf("%u", filesize($filename));
             $file_object = array(
             	'file' => $object,
             	'name' => $object,
-                'size' => ($filetype == 'dir' || $filetype == 'link') ? '-' : sprintf("%u", filesize($filename)),
+                'size' => ($filetype == 'dir' || $filetype == 'link') ? '-' : $filesize,
+                'hsize' => ($filetype == 'dir' || $filetype == 'link') ? '-' : human_filesize($filesize),
                 'perm' => permission($filename),
                 'type' => $filetype,
             	'type_name' => $filetype . '_' . $object,

@@ -97,7 +97,7 @@
 						<thead>
 							<tr>
 								<th	ng-repeat="(key, value) in list[0]" ng-bind="key"
-									ng-hide="key == 'name' || key == 'type_name'"></th>
+									ng-hide="key == 'name' || key == 'size' || key == 'type_name'"></th>
 								 <th style="width: 3.5em;"></th>
 							</tr>
 						</thead>
@@ -105,7 +105,7 @@
 							<tr ng-repeat="row in list">
 								<td ng-repeat="(key, value) in row" ng-bind-html="value"
 									ng-click="dirClick(value, row);"
-									ng-hide="key == 'name' || key == 'type_name'"></td>
+									ng-hide="key == 'name' || key == 'size' || key == 'type_name'"></td>
 								<td>
 								    <a href="#modify"><i class="fa fa-pencil"></i></a>
                                     <a href="#remove"><i class="fa fa-trash-o"></i></a>

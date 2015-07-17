@@ -39,6 +39,7 @@ switch ($objData->rq) {
 			'file' => '..',
 			'name' => '..',
 			'size' => '-',
+			'hsize' => '-',
 			'perm' => '-',
 			'type' => 'dir',
 			'type_name' => 'dir_..',
