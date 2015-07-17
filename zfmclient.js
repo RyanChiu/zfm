@@ -99,26 +99,28 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 			for (var key in data) {
 				switch (key) {
 				case 'list':
-					var list = data.list;
-					for (var row in list) {
+					var files = data.list.files;
+					for (var row in files) {
 						var date = new Date();
-						if (list[row]["type"] == "dir") {
-							if (list[row]["name"] == "..") {
-								list[row]["file"] = '<a href="#' + (date.getMilliseconds() + row) + '"><i class="fa fa-level-up"></i> [' + list[row]["name"] + ']</a>';
+						if (files[row]["type"] == "dir") {
+							if (files[row]["name"] == "..") {
+								files[row]["file"] = '<a href="#' + (date.getMilliseconds() + row) + '"><i class="fa fa-level-up"></i> [' + files[row]["name"] + ']</a>';
 							} else {
-								list[row]["file"] = '<a href="#' + (date.getMilliseconds() + row) + '"><i class="fa fa-folder"></i> [' + list[row]["name"] + ']</a>';
+								files[row]["file"] = '<a href="#' + (date.getMilliseconds() + row) + '"><i class="fa fa-folder"></i> [' + files[row]["name"] + ']</a>';
 							}
-						} else if (list[row]["type"] == "file") {
-							list[row]["file"] = '<i class="fa fa-file-o"></i> ' + list[row]["name"];
-						} else if (list[row]["type"] == "link") {
-							list[row]["file"] = '<i class="fa fa-link"></i> ' + list[row]["name"];
+						} else if (files[row]["type"] == "file") {
+							files[row]["file"] = '<i class="fa fa-file-o"></i> ' + files[row]["name"];
+						} else if (files[row]["type"] == "link") {
+							files[row]["file"] = '<i class="fa fa-link"></i> ' + files[row]["name"];
 						}
 					}
-					$scope.list = $scope.sortJson(list, "type_name", true);
+					$scope.files = $scope.sortJson(files, "type_name", true);
 					if ($scope.dstDir != "") {
 						$scope.rlDir = $scope.rlDir + "/" + $scope.dstDir;
 					}
 					$scope.rlDir = $scope.shrinkRlDir();
+					
+					$scope.space = data.list.space;
 					break;
 				case 'dirs':
 					var dirs = data.dirs;

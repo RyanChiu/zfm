@@ -18,7 +18,9 @@ function getSpace($dir) {
 	return array(
 		"dir" => $dir,
 		"total" => $total,
-		"free" => $free
+		"free" => $free,
+		"htotal" => human_filesize($total),
+		"hfree" => human_filesize($free)
 	);
 }
 
@@ -46,14 +48,17 @@ switch ($objData->rq) {
 			'time' => '-',
 		));
 		echo json_encode(array(
-			$objData->rq => $dir_list
+			$objData->rq => array(
+				"files" => $dir_list,
+				"space" => getSpace($disk_config->dirs[$objData->bm]["path"])
+			)
 		));
 		break;
 	case 'all':
 		echo json_encode(array(
 			$objData->rq => array(
-				"files" => dir_list($disk_config->dirs[$objData->bm]["path"]),
-				"spaces" => getSpace($disk_config->dirs[$objData->bm]["path"])
+				"allfiles" => dir_list($disk_config->dirs[$objData->bm]["path"]),
+				"space" => getSpace($disk_config->dirs[$objData->bm]["path"])
 			)
 		));
 		break;

@@ -82,6 +82,11 @@
 					<i class="fa fa-plus"></i> Upload
 				</button>
 				<div class="btn-group"></div>
+				<div style="float:right;margin-right:16px;">
+				<p style="float:left;" ng-bind="space.hfree"></p>
+				<p style="float:left;">/</p>
+				<p style="float:left;" ng-bind="space.htotal"></p>
+				</div>
 			</div>
 			<div>
 				<div ng-show="false">
@@ -93,16 +98,16 @@
 					<hr>
 				</div>
 				<div>
-					<table class="table" ng-show="list !== undefined">
+					<table class="table" ng-show="files !== undefined">
 						<thead>
 							<tr>
-								<th	ng-repeat="(key, value) in list[0]" ng-bind="key"
+								<th	ng-repeat="(key, value) in files[0]" ng-bind="key"
 									ng-hide="key == 'name' || key == 'size' || key == 'type_name'"></th>
 								 <th style="width: 3.5em;"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="row in list">
+							<tr ng-repeat="row in files">
 								<td ng-repeat="(key, value) in row" ng-bind-html="value"
 									ng-click="dirClick(value, row);"
 									ng-hide="key == 'name' || key == 'size' || key == 'type_name'"></td>
