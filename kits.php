@@ -86,7 +86,7 @@ function dir_list($dir)
             $file_object = array(
             	'file' => $object,
             	'name' => $object,
-                'size' => ($filetype == 'dir' || $filetype == 'link') ? '-' : filesize($filename),
+                'size' => ($filetype == 'dir' || $filetype == 'link') ? '-' : sprintf("%u", filesize($filename)),
                 'perm' => permission($filename),
                 'type' => $filetype,
             	'type_name' => $filetype . '_' . $object,
@@ -96,5 +96,5 @@ function dir_list($dir)
         }
 
     return $dir_objects;
-}
+} 
 ?>
