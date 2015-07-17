@@ -96,8 +96,8 @@ function dir_list($dir)
             $file_object = array(
             	'file' => $object,
             	'name' => $object,
-                'size' => ($filetype == 'dir' || $filetype == 'link') ? '-' : $filesize,
-                'hsize' => ($filetype == 'dir' || $filetype == 'link') ? '-' : human_filesize($filesize),
+                'size' => (!is_file($filename)) ? '-' : $filesize,
+                'hsize' => (!is_file($filename)) ? '-' : human_filesize($filesize),
                 'perm' => permission($filename),
                 'type' => $filetype,
             	'type_name' => $filetype . '_' . $object,
