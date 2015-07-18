@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="libs/stylesheets/premium.css">
 	<script src="libs/angular-1.4.1/angular.min.js"></script>
     <script src="libs/angular-1.4.1/angular-cookies.min.js"></script>
+    <script src="libs/angular-1.4.1/angular-sanitize.min.js"></script>
     <script src="libs/md5.min.js"></script>
     <script src="sign-in.js"></script>
 </head>
@@ -68,7 +69,8 @@
 					<!--  
 					<label class="remember-me"><input type="checkbox">
 						Remember me</label>
-					-->{{result}}
+					-->
+					<p ng-bind-html="result"></p>
 					<div class="clearfix"></div>
 				</form>
 			</div>

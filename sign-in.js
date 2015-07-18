@@ -1,4 +1,4 @@
-var sin = angular.module("sinClient", ['ngCookies']);
+var sin = angular.module("sinClient", ['ngSanitize', 'ngCookies']);
 sin.controller("sinController", function($window, $cookieStore, $scope, $http) {
 	$scope.url = "entrance.php";
 	

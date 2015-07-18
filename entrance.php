@@ -18,7 +18,7 @@ if (isset($objData->username) && isset($objData->password)) {
 
 echo json_encode(array(
 	'approved' => $approved,
-	'msg' => $approved ? 'Signed in...' : 'Invalid user name and password.',
+	'msg' => $approved ? 'Signed in...' : '<font color="red">Invalid user name or password.</font>',
 	'tag' => $objData->username . ":" . $objData->password . "_" . md5($account_config->users[0]["password"])
 ));
 ?>
