@@ -1,5 +1,5 @@
 var zfm = angular
-	.module("zfmClient", ['ngSanitize', 'ngCookies', 'ngDialog']);
+	.module("zfmClient", ['ngSanitize', 'ngCookies', 'ngDialog', 'chart.js']);
 
 zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, ngDialog) {
 	$scope.url = "zfmsvr.php";
@@ -7,6 +7,9 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	$scope.idxCurBM = 0;
 	$scope.rlDir = ".";
 	$scope.dstDir = "";
+	
+	$scope.spaceLabels = ["used", "free"];
+	$scope.spaceColours = ["#F38630", "#69D2E7"]
 	
 	/**
 	 * from local
@@ -121,6 +124,7 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 					$scope.rlDir = $scope.shrinkRlDir();
 					
 					$scope.space = data.list.space;
+					$scope.spaceData = [$scope.space.used, $scope.space.free];
 					break;
 				case 'dirs':
 					var dirs = data.dirs;

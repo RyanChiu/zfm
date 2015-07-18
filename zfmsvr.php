@@ -19,8 +19,10 @@ function getSpace($dir) {
 		"dir" => $dir,
 		"total" => $total,
 		"free" => $free,
+		"used" => $total - $free,
 		"htotal" => human_filesize($total),
-		"hfree" => human_filesize($free)
+		"hfree" => human_filesize($free),
+		"hused" => human_filesize($total - $free)
 	);
 }
 
