@@ -1,5 +1,10 @@
 var zfm = angular
-	.module("zfmClient", ['ngSanitize', 'ngCookies', 'ngDialog', 'chart.js']);
+	.module("zfmClient", 
+		['ngSanitize', 'ngCookies', 'ngDialog', 'chart.js', 'angular-loading-bar']);
+zfm.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeBar = true;
+    cfpLoadingBarProvider.latencyThreshold = 500;
+}]);
 
 zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, ngDialog) {
 	$scope.url = "zfmsvr.php";
