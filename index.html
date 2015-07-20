@@ -75,8 +75,11 @@
 	<div class="content">
 		<div class="header" style="padding:0px 0 8px 0;margin-bottom:7px;">
             <div style="float:left;margin:0 10px 0 10px;">Current Path:</div>
-            <div style="float:left;padding-right:8px;" ng-bind="rlDir"></div>
-            <i class="fa fa-road"></i>
+            <div style="float:left;"
+            	ng-repeat="lrd in rlDirs" 
+            	ng-bind-html="lrd[0] + '/'"
+            	ng-click="pathClick(lrd[1])"></div>
+            <i class="fa fa-road" style="margin-left:8px;"></i>
             <div style="float:right;margin-right:16px;">
                 <i class="fa fa-square" style="float:left;width:12px;height:12px;color:#F38630;margin:3px 1px 0 0;"></i>
                 <p style="float:left;">used:</p>

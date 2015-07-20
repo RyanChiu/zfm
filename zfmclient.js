@@ -9,7 +9,7 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	$scope.dstDir = "";
 	
 	$scope.spaceLabels = ["used", "free"];
-	$scope.spaceColours = ["#F38630", "#69D2E7"]
+	$scope.spaceColours = ["#F38630", "#69D2E7"];
 	
 	/**
 	 * from local
@@ -61,6 +61,24 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		if (rtn_dir == "./.") return ".";
 		return rtn_dir;
 	}
+	
+	$scope.linkRlDir = function() {
+		var _dirs = $scope.rlDir.split("/");
+		var dirs = new Array();
+		var rnf = ["", ""];
+		for (var i = 0; i < _dirs.length; i++) {
+			if (i == 0) {
+				rnf[1] += _dirs[i];
+			} else {
+				rnf[1] += ("/" + _dirs[i]);
+			}
+			rnf[0] = "<a href='#" + rnf[1] + "'>" + _dirs[i] + "</a>";
+			dirs[i] = [rnf[0], rnf[1]];
+		}
+		return dirs; 
+	}
+	
+	$scope.rlDirs = $scope.linkRlDir();
 		
 	$scope.dirClick = function(dir, row) {
 		if (row.type === "dir") {
@@ -79,6 +97,13 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	$scope.bmClick = function(idxBM) {
 		$scope.idxCurBM = idxBM;
 		$scope.rlDir = ($scope.dstDir = ".");
+		$scope.askFor("list");
+		return true;
+	}
+	
+	$scope.pathClick = function(rlDir) {
+		$scope.dstDir = "";
+		$scope.rlDir = rlDir;
 		$scope.askFor("list");
 		return true;
 	}
@@ -122,6 +147,7 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 						$scope.rlDir = $scope.rlDir + "/" + $scope.dstDir;
 					}
 					$scope.rlDir = $scope.shrinkRlDir();
+					$scope.rlDirs = $scope.linkRlDir();
 					
 					$scope.space = data.list.space;
 					$scope.spaceData = [$scope.space.used, $scope.space.free];
