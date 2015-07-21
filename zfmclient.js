@@ -90,7 +90,7 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 			$scope.dstDir = row.name;
 			if (row.name == "..") {
 				if ($scope.rlDir == ".") {
-					$scope.openDialog('ngDialogTemplateWarning');
+					$scope.openDialog('templates/ngDialog/commonWarning.html');
 					return false;
 				}
 			}
@@ -114,7 +114,7 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	}
 	
 	$scope.uploadClick = function() {
-		$scope.openDialog("ngDialogTemplateWarning");
+		$scope.openDialog("templates/ngDialog/commonWarning.html");
 		return false;
 	}
 	

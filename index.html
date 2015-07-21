@@ -76,12 +76,14 @@
 
 	<div class="content">
 		<div class="header" style="padding:0px 0 8px 0;margin-bottom:7px;">
-            <div style="float:left;margin:0 10px 0 10px;">Current Path:</div>
+            <div style="float:left;margin:0 0 0 3px;">
+                <i style="float:left;margin:3px 3px 0 0;" class="fa fa-road"></i>Current Path:
+            </div>
             <div style="float:left;"
             	ng-repeat="lrd in rlDirs" 
             	ng-bind-html="lrd[0] + '/'"
             	ng-click="pathClick(lrd[1])"></div>
-            <i class="fa fa-road" style="margin-left:8px;"></i>
+            <i class="fa fa-road" style="margin-left:8px;color:white;"></i>
             <div style="float:right;margin-right:16px;">
                 <i class="fa fa-square" style="float:left;width:12px;height:12px;color:#F38630;margin:3px 1px 0 0;"></i>
                 <p style="float:left;">used:</p>
@@ -182,26 +184,6 @@
                     <button class="btn btn-default" data-dismiss="modal"
                         aria-hidden="false">Cancel</button>
                     <button class="btn btn-danger" data-dismiss="modal">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    </script>
-    
-    <script type="text/ng-template" id="ngDialogTemplateWarning">
-    <div class="modal small" tabindex="-1" role="dialog" style="display:block;">
-       <div class="small modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Forbidden warning</h3>
-                </div>
-                <div class="modal-body">
-                    <p class="error-text">
-                        <i class="fa fa-warning modal-icon"></i> It's not allowed in this case.
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" data-dismiss="modal" ng-click="closeThisDialog(0)">OK</button>
                 </div>
             </div>
         </div>
