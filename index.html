@@ -85,13 +85,16 @@
             	ng-click="pathClick(lrd[1])"></div>
             <i class="fa fa-road" style="margin-left:8px;color:white;"></i>
             <div style="float:right;margin-right:16px;">
+            	<p style="float:left;margin:0 1px 0 1px;">[</p>
+				<p style="float:left;" ng-bind="space.htotal"></p>
+				<p style="float:left;margin:0 1px 0 1px;">]:</p>
                 <i class="fa fa-square" style="float:left;width:12px;height:12px;color:#F38630;margin:3px 1px 0 0;"></i>
                 <p style="float:left;">used:</p>
 				<p style="float:left;" ng-bind="space.hused"></p>
 				<p style="float:left;margin:0 1px 0 1px;">/</p>
 				<i class="fa fa-square" style="float:left;width:12px;height:12px;color:#69D2E7;margin:3px 1px 0 0;"></i>
-				<p style="float:left;">total:</p>
-				<p style="float:left;" ng-bind="space.htotal"></p>
+				<p style="float:left;">free:</p>
+				<p style="float:left;" ng-bind="space.hfree"></p>
 				<div style="float:left;width:20px;height:20px;">
                 <canvas id="pie"
                     style="margin:0;padding:0;width:20px;height:20px;"
