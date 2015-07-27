@@ -1,6 +1,7 @@
 var zfm = angular
 	.module("zfmClient", 
 		['ngSanitize', 'ngCookies', 'ngDialog', 'chart.js', 'angular-loading-bar']);
+
 zfm.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = true;
     cfpLoadingBarProvider.latencyThreshold = 500;
@@ -77,7 +78,8 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 			} else {
 				rnf[1] += ("/" + _dirs[i]);
 			}
-			rnf[0] = "<a href='#" + rnf[1] + "'>" + _dirs[i] + "</a>";
+			//rnf[0] = "<a href='#" + rnf[1] + "'>" + _dirs[i] + "</a>";
+			rnf[0] = _dirs[i];
 			dirs[i] = [rnf[0], rnf[1]];
 		}
 		return dirs; 
@@ -111,11 +113,6 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		$scope.rlDir = rlDir;
 		$scope.askFor("list");
 		return true;
-	}
-	
-	$scope.uploadClick = function() {
-		$scope.openDialog("templates/ngDialog/commonWarning.html");
-		return false;
 	}
 	
 	/**
@@ -160,9 +157,8 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 				case 'dirs':
 					var dirs = data.dirs;
 					for (var i in dirs) {
-						dirs[i]["alias"] = 
-							'<a href="#"><span class="fa fa-bookmark-o"> ' 
-							+ dirs[i]["alias"] + '</span></a>';
+						dirs[i]["link"] = 
+							'<a href="#">' + dirs[i]["alias"] + '</a>';
 						dirs[i]["idx"] = i;
 					}
 					$scope.dirs = dirs;

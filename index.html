@@ -3,35 +3,74 @@
 <head>
     <meta charset="utf-8">
     <title>Z-FILE-MANAGER-PANEL</title>
+
     <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="libs/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" type="text/css" href="libs/stylesheets/theme.css">
-    <link rel="stylesheet" type="text/css" href="libs/stylesheets/premium.css">
     <link rel="stylesheet" type="text/css" href="libs/ngDialog-master/css/ngDialog.css">
     <link rel="stylesheet" type="text/css" href="libs/angular-chart/angular-chart.css">
     <link rel='stylesheet' type="text/css" href='libs/angular-loading-bar/loading-bar.css'>
+    <link rel='stylesheet' type="text/css" href='libs/angular-loading-bar/loading-bar.css'>
+
     <script src="libs/angular-1.4.1/angular.min.js"></script>
     <script src="libs/angular-1.4.1/angular-cookies.min.js"></script>
 	<script src="libs/angular-1.4.1/angular-sanitize.min.js"></script>
+	
+	<script src="libs/jquery-1.11.1.min.js"></script>
+	<script src="libs/bootstrap/js/dropdown.js"></script>
+	
 	<script src="libs/ngDialog-master/js/ngDialog.js"></script>
 	<script src="libs/angular-chart/Chart.js"></script>
     <script src="libs/angular-chart/angular-chart.min.js"></script>
     <script src="libs/angular-loading-bar/loading-bar.js"></script>
+    
 	<script src="zfmclient.js"></script>
-</head>
-<body class="theme-blue" ng-controller="zfmController">
 
     <style type="text/css">
-        #line-chart {
-            height:300px;
-            width:800px;
-            margin: 0px auto;
-            margin-top: 1em;
+		html,body {
+			height:100%;
+			width:100%;
+			overflow-y:hidden;
+		}
+        #header {
+			width:100%; 
+			height:35px;
+        	z-index:999;
+        	position:fixed; 
+			top:0; 
+			left:0;
+			padding:0 6px 0 6px;
+			background-color:#4d5b76;
+			background-clip: padding-box;
+			_position:absolute;
+			_bottom: expression_r(documentElement.scrollTop + documentElement.clientHeight-this.offsetHeight); 
+			overflow:visible;
         }
-        .navbar-default .navbar-brand, .navbar-default .navbar-brand:hover { 
-            color: #fff;
+        #content {
+        	margin:35px 0 0 0;
+        	width:100%;
+        	height:100%;
+        	overflow:auto;
+        	overflow-x:hidden;
         }
+        #footer {
+        	height:25px;
+        	font-size:.85em;
+        	padding:3px 9px 3px 6px;
+        	text-align:right;
+        	z-index:999; 
+        	position:fixed; 
+        	bottom:3px; 
+        	left:0; 
+        	width:100%; 
+        	border-top:solid 1px #ccc;
+        	_position:absolute;
+        	_top: expression_r(documentElement.scrollTop + documentElement.clientHeight-this.offsetHeight); 
+        	overflow:visible; 
+        }
+		
     </style>
+</head>
+<body class="theme-blue" ng-controller="zfmController">
 
   <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 
@@ -43,130 +82,89 @@
    
   <!--<![endif]-->
 
-    <div class="navbar navbar-default" role="navigation">
-    
-        <div class="navbar-header">
-          <a class="" href="index.html">
-            <span class="navbar-brand"><span class="fa fa-paper-plane"></span> Z-FILE-MANAGER-PANEL　</span>
-          </a>
-        </div>
-
-        <div class="navbar-collapse collapse" style="height: 1px;">
-          <ul id="main-menu" class="nav navbar-nav navbar-right">
-            <li class="dropdown hidden-xs">
-                <a href="sign-in.html" class="dropdown-toggle" data-toggle="dropdown"　ng-click="leave()">
-                    <!-- <span class="glyphicon glyphicon-user padding-right-small" style="position:relative;top: 3px;"></span> -->
-                    Leave
-                    <i class="fa fa-sign-out"></i>
-                </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-    <div class="sidebar-nav">
-	    <ul>
-		    <li><a href="#" data-target=".dashboard-menu" class="nav-header" data-toggle="collapse">
-		        <i class="fa fa-fw fa-folder-open"></i> Directories<i class="fa fa-collapse"></i></a></li>
-		    <li><ul class="dashboard-menu nav nav-list">
-		        <li ng-repeat="dir in dirs" ng-bind-html="dir.alias" ng-click="bmClick(dir.idx);"></li>
-		    </ul></li>
-	    </ul>
-    </div>
-
-	<div class="content">
-		<div class="header" style="padding:0px 0 8px 0;margin-bottom:7px;">
-            <div style="float:left;margin:0 0 0 3px;">
-                <i style="float:left;margin:3px 3px 0 0;" class="fa fa-road"></i>Current Path:
-            </div>
-            <div style="float:left;"
-            	ng-repeat="lrd in rlDirs" 
-            	ng-bind-html="lrd[0] + '/'"
-            	ng-click="pathClick(lrd[1])"></div>
-            <i class="fa fa-road" style="margin-left:8px;color:white;"></i>
-            <div style="float:right;margin-right:16px;">
-            	<p style="float:left;margin:0 1px 0 1px;">[</p>
-				<p style="float:left;" ng-bind="space.htotal"></p>
-				<p style="float:left;margin:0 1px 0 1px;">]:</p>
-                <i class="fa fa-square" style="float:left;width:12px;height:12px;color:#F38630;margin:3px 1px 0 0;"></i>
-                <p style="float:left;">used:</p>
-				<p style="float:left;" ng-bind="space.hused"></p>
-				<p style="float:left;margin:0 1px 0 1px;">/</p>
-				<i class="fa fa-square" style="float:left;width:12px;height:12px;color:#69D2E7;margin:3px 1px 0 0;"></i>
-				<p style="float:left;">free:</p>
-				<p style="float:left;" ng-bind="space.hfree"></p>
-				<div style="float:left;width:20px;height:20px;">
-                <canvas id="pie"
-                    style="margin:0;padding:0;width:20px;height:20px;"
-                    class="chart chart-pie "
-                    data="spaceData" labels="spaceLabels"
-                    colours="spaceColours"
-                    options="{}">
-                </canvas>
+	<div id="header">
+		<div style="background-clip:padding-box;color:white;">
+			<div style="float:left;margin:6px 0 0 23px;">
+				<div class="dropdown">
+                    <button class="btn btn-primary btn-xs dropdown-toggle" 
+                        type="button" id="dropdownMenuPaths" 
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-folder-open" 
+                            aria-hidden="true" 
+                            style="margin-right:3px;"></span>
+                        <span ng-bind="dirs[idxCurBM].alias"></span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuPaths">
+                        <li ng-repeat="dir in dirs" ng-bind-html="dir.link" ng-click="bmClick(dir.idx)"></li>
+                    </ul>
                 </div>
 			</div>
-		</div>
-		<div class="main-content">
 
-			<div class="btn-toolbar list-toolbar">
-				<button class="btn btn-primary" ng-click="uploadClick();">
-					<i class="fa fa-plus"></i> Upload
+			<div style="float:left;margin:6px 0 0 1px;">
+				<button class="btn btn-primary btn-xs" style="margin:0 1px 0 0;"
+					ng-repeat="lrd in rlDirs" ng-bind-html="lrd[0]" ng-click="pathClick(lrd[1])">
 				</button>
-				<div class="btn-group"></div>
-			</div>
-			<div>
-				<div ng-show="false">
-					<div>[TEST ZONE]</div>
-					<input type="text" ng-model="rq" placeholder="request keyword">
-					<button type="submit" ng-click="ask();">ask</button>
-					<br />
-					<textarea style="width: 90%; height: 60px; margin-top: 3px;">{{answers}}</textarea>
-					<hr>
-				</div>
-				<div>
-					<table class="table" ng-show="files !== undefined">
-						<thead>
-							<tr>
-								<th	ng-repeat="(key, value) in files[0]" ng-bind="key"
-									ng-hide="key == 'name' || key == 'size' || key == 'type_name'"></th>
-								 <th style="width: 3.5em;"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="row in files">
-								<td ng-repeat="(key, value) in row" ng-bind-html="value"
-									ng-click="dirClick(value, row);"
-									ng-hide="key == 'name' || key == 'size' || key == 'type_name'"></td>
-								<td>
-								    <a href="#modify"><i class="fa fa-pencil"></i></a>
-                                    <a href="#remove"><i class="fa fa-trash-o"></i></a>
-                                </td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
 			</div>
 
-			<footer>
-				<hr>
+			<a href="sign-in.html" 
+				style="color:white;float:right;margin:8px 23px 0 0;"
+				ng-click="leave()">
+				Leave <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+			</a>
+		</div>
+	</div>
+	
+	<div id="content">
 
-				<!-- Purchase a site license to remove this link from the footer: http://www.portnine.com/bootstrap-themes -->
-				<!--  
-				<p class="pull-right">
-					A <a href="http://www.portnine.com/bootstrap-themes"
-						target="_blank">Free Bootstrap Theme</a> by <a
-						href="http://www.portnine.com" target="_blank">Portnine</a>
-				</p>
-				<p>
-					© 2014 <a href="http://www.portnine.com" target="_blank">Portnine</a>
-				</p>
-				-->
-				<p class="pull-right">
-				    © 2015 ZFM (Themed with © 2014 <a href="http://www.portnine.com" target="_blank">Portnine</a>)
-				</p>
-			</footer>
+		<table class="table table-striped table-hover table-condensed" 
+			ng-show="files !== undefined">
+			<thead>
+				<tr>
+					<th ng-repeat="(key, value) in files[0]" ng-bind="key"
+						ng-hide="key == 'name' || key == 'size' || key == 'type_name'"></th>
+					<th style="width: 3.5em;"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="row in files">
+					<td ng-repeat="(key, value) in row" ng-bind-html="value"
+						ng-click="dirClick(value, row);"
+						ng-hide="key == 'name' || key == 'size' || key == 'type_name'"></td>
+					<td><a href="#edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></a> <a
+						href="#remove"><span class="glyphicon glyphicon-trash" aria-hidden="true"></a></td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+	<div id="footer">
+		<div style="float: left; margin-right: 16px;">
+			<div style="float: left; width: 20px; height: 20px;">
+				<canvas id="pie"
+					style="margin: 0; padding: 0; width: 20px; height: 20px;"
+					class="chart chart-pie " data="spaceData" labels="spaceLabels"
+					colours="spaceColours" options="{}">
+	            </canvas>
+			</div>
+			<i class="fa fa-square"
+				style="float:left;width:12px;height:12px;color:#F38630;margin:3px 1px 0 0;"></i>
+			<p style="float:left;margin:0 1px 0 1px;">used:</p>
+			<p style="float:left;margin:0 1px 0 1px;" ng-bind="space.hused"></p>
+			<p style="float:left;margin:0 1px 0 1px;">/</p>
+			<i class="fa fa-square"
+				style="float:left;width:12px;height:12px;color:#69D2E7;margin:3px 1px 0 0;"></i>
+			<p style="float:left;margin:0 1px 0 1px;">free:</p>
+			<p style="float:left;margin:0 1px 0 1px;" ng-bind="space.hfree"></p>
+			<p style="float:left;margin:0 1px 0 1px;font-weight:bold;"> | total:</p>
+			<p style="float:left;margin:0 1px 0 1px;font-weight:bold;" ng-bind="space.htotal"></p>
+		</div>
+		<div style="float:right;margin-right:23px;">
+		© 2015 ZFM (Themed with © 2014 <a href="http://www.portnine.com" target="_blank">Portnine</a>)|<a href="http://glyphicons.com/">glyphicons</a>
 		</div>
 	</div>
 
+<!-- Purchase a site license to remove this link from the footer: http://www.portnine.com/bootstrap-themes -->
 </body>
 </html>
