@@ -62,7 +62,7 @@
   display: block;
   position: fixed;
   z-index: 10002;
-  top: 17px;/*10px;*/
+  top: 10px;
   left: 6px;/*10px;*/
 }
 
