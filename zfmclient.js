@@ -186,8 +186,18 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	}
 	
 	$scope.leave = function() {
-		$cookieStore.remove("username");
-		$window.location.href = "sign-in.html";
+		var dialog = ngDialog.open({
+			template: 'templates/ngDialog/confirmLeave.html',
+			showClose: false
+		});
+		dialog.closePromise.then(function (data) {
+		    if (data.value == 1) {
+		    	$cookieStore.remove("username");
+		    	$window.location.href = "sign-in.html";
+		    } else {
+		    	//do nothing
+		    }
+		});
 	}
 	/**
 	 * verified if sign in approved

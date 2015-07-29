@@ -1,4 +1,5 @@
-<div class="modal small" tabindex="-1" style="display: block;">
+<div class="modal small" tabindex="-1" role="dialog"
+	style="display: block;">
 	<div class="small modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -7,12 +8,15 @@
 			<div class="modal-body">
 				<p class="error-text">
 					<i class="fa fa-warning modal-icon"></i>
-					It's not allowed in this case.
+					Are you sure you want to sign out?
 				</p>
 			</div>
 			<div class="modal-footer">
+				<button class="btn btn-default" data-dismiss="modal"
+					aria-hidden="false"
+					ng-click="closeThisDialog(0)">Cancel</button>
 				<button class="btn btn-danger" data-dismiss="modal"
-					ng-click="closeThisDialog(0)">OK</button>
+				    ng-click="closeThisDialog(1)">Let me go</button>
 			</div>
 		</div>
 	</div>
