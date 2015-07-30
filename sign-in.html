@@ -9,22 +9,10 @@
     <script src="libs/angular-1.4.1/angular-cookies.min.js"></script>
     <script src="libs/angular-1.4.1/angular-sanitize.min.js"></script>
     <script src="libs/md5.min.js"></script>
-	    <script src="sign-in.js"></script>
+    <script src="sign-in.js"></script>
 	
-	<style type="text/css">
-		#line-chart {
-			height: 300px;
-			width: 800px;
-			margin: 0px auto;
-			margin-top: 1em;
-		}
-		
-		.navbar-default .navbar-brand,.navbar-default .navbar-brand:hover {
-			color: #fff;
-		}
-	</style>
 </head>
-<body class=" theme-blue" ng-controller="sinController">
+<body ng-controller="sinController">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -47,33 +35,38 @@
 		</div>
 	</nav>
 
-	<div class="dialog">
-		<div class="panel panel-default">
-			<p class="panel-heading no-collapse">Sign In</p>
-			<div class="panel-body">
-				<form>
-					<div class="form-group">
-						<label>Username</label> <input type="text"
-							class="form-control span12" ng-model="username">
-					</div>
-					<div class="form-group">
-						<label>Password</label> <input type="password"
-							class="form-control span12" ng-model="password">
-					</div>
-					<a href="#" class="btn btn-primary pull-right" ng-click="signMeIn()">Sign In</a>
-					<!--  
-					<label class="remember-me"><input type="checkbox">
-						Remember me</label>
-					-->
-					<p ng-bind-html="result"></p>
-					<div class="clearfix"></div>
-				</form>
+	<div class="container">
+		<div class="col-xs-8 col-md-6"
+			style="float: none; display: block; margin-left: auto; margin-right: auto;">
+			<div class="panel panel-default"
+				style="min-width: 230px;">
+				<p class="panel-heading">Sign In</p>
+				<div class="panel-body">
+					<form>
+						<div class="form-group">
+							<label>Username</label> <input type="text"
+								class="form-control span12" ng-model="username">
+						</div>
+						<div class="form-group">
+							<label>Password</label> <input type="password"
+								class="form-control span12" ng-model="password">
+						</div>
+						<a href="#" class="btn btn-primary pull-right"
+							ng-click="signMeIn()">Sign In</a>
+						<!--  
+				<label class="remember-me"><input type="checkbox">
+					Remember me</label>
+				-->
+						<p ng-bind-html="result"></p>
+						<div class="clearfix"></div>
+					</form>
+				</div>
 			</div>
 		</div>
-		<p class="pull-right" style="margin-right:16px;">
-			© 2015 ZFM (<a href="http://glyphicons.com/">glyphicons</a>)
-		</p>
 	</div>
+	<p class="pull-right" style="margin-right:16px;">
+		© 2015 ZFM (<a href="http://glyphicons.com/">glyphicons</a>)
+	</p>
 
 </body>
 </html>
