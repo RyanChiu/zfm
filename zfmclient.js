@@ -3,7 +3,8 @@ var zfm = angular
 		['ngSanitize', 'ngCookies', 'ngDialog', 'chart.js', 'angular-loading-bar']);
 
 zfm.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
-    cfpLoadingBarProvider.includeBar = true;
+	cfpLoadingBarProvider.includeSpinner = false;
+	cfpLoadingBarProvider.includeBar = true;
     cfpLoadingBarProvider.latencyThreshold = 500;
 }]);
 
@@ -113,6 +114,17 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		$scope.rlDir = rlDir;
 		$scope.askFor("list");
 		return true;
+	}
+	
+	$scope.colAlias = function(keyName) {
+		switch (keyName) {
+		default: return keyName;
+		case "file": return "Name";
+		case "hsize": return "Size";
+		case "perm": return "Permission";
+		case "type": return "Type";
+		case "time": return "Time";
+		}
 	}
 	
 	/**
