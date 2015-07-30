@@ -30,7 +30,7 @@
   -o-transition: width 350ms;
   transition: width 350ms;
 
-  background: #69D2E7;
+  background: #fb4646;/*#69D2E7;*/
   position: fixed;
   z-index: 10002;
   top: 0;
