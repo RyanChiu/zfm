@@ -88,17 +88,15 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	
 	$scope.rlDirs = $scope.linkRlDir();
 		
-	$scope.dirClick = function(dir, row) {
-		if (row.type === "dir") {
-			$scope.dstDir = row.name;
-			if (row.name == "..") {
-				if ($scope.rlDir == ".") {
-					$scope.openDialog('templates/ngDialog/commonWarning.html');
-					return false;
-				}
+	$scope.dirClick = function(dir) {
+		$scope.dstDir = dir;
+		if (dir == "..") {
+			if ($scope.rlDir == ".") {
+				$scope.openDialog('templates/ngDialog/commonWarning.html');
+				return false;
 			}
-			$scope.askFor("list");
 		}
+		$scope.askFor("list");
 		return true;
 	}
 	
@@ -118,12 +116,26 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	
 	$scope.colAlias = function(keyName) {
 		switch (keyName) {
-		default: return keyName;
-		case "file": return "Name";
+		case "name": return "Name";
 		case "hsize": return "Size";
 		case "perm": return "Permission";
 		case "type": return "Type";
 		case "time": return "Time";
+		default: return keyName;
+		}
+	}
+	
+	$scope.getIconOfFile = function(type, name) {
+		if (type == "dir") {
+			if (name == "..") {
+				return '<i class="fa fa-level-up"></i>';
+			} else {
+				return '<i class="fa fa-folder"></i>';
+			}
+		} else if (type == "file") {
+			return '<i class="fa fa-file-o"></i>';
+		} else if (type == "link") {
+			return '<i class="fa fa-link"></i>';
 		}
 	}
 	
@@ -142,20 +154,6 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 				switch (key) {
 				case 'list':
 					var files = data.list.files;
-					for (var row in files) {
-						var date = new Date();
-						if (files[row]["type"] == "dir") {
-							if (files[row]["name"] == "..") {
-								files[row]["file"] = '<a href="#' + (date.getMilliseconds() + row) + '"><i class="fa fa-level-up"></i> [' + files[row]["name"] + ']</a>';
-							} else {
-								files[row]["file"] = '<a href="#' + (date.getMilliseconds() + row) + '"><i class="fa fa-folder"></i> [' + files[row]["name"] + ']</a>';
-							}
-						} else if (files[row]["type"] == "file") {
-							files[row]["file"] = '<i class="fa fa-file-o"></i> ' + files[row]["name"];
-						} else if (files[row]["type"] == "link") {
-							files[row]["file"] = '<i class="fa fa-link"></i> ' + files[row]["name"];
-						}
-					}
 					$scope.files = $scope.sortJson(files, "type_name", true);
 					if ($scope.dstDir != "") {
 						$scope.rlDir = $scope.rlDir + "/" + $scope.dstDir;

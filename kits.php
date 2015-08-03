@@ -94,7 +94,6 @@ function dir_list($dir)
             $filetype = filetype($filename);
             $filesize = sprintf("%u", filesize($filename));
             $file_object = array(
-            	'file' => $object,
             	'name' => $object,
                 'size' => (!is_file($filename)) ? '-' : $filesize,
                 'hsize' => (!is_file($filename)) ? '-' : human_filesize($filesize),

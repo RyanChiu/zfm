@@ -39,16 +39,15 @@ switch ($objData->rq) {
 	case 'list':
 		$dst_dir = $disk_config->dirs[$objData->bm]["path"] . "/" . (isset($objData->dir) ? $objData->dir : "");
 		$dir_list = dir_list($dst_dir);
-		array_push($dir_list, array(
-			'file' => '..',
+		$dir_list[] = array(
 			'name' => '..',
 			'size' => '-',
 			'hsize' => '-',
 			'perm' => '-',
 			'type' => 'dir',
 			'type_name' => 'dir_..',
-			'time' => '-',
-		));
+			'time' => '-'
+		);
 		echo json_encode(array(
 			$objData->rq => array(
 				"files" => $dir_list,
