@@ -25,7 +25,7 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	$scope.pollList = function() {
 		listPoller = poller.get($scope.url, {
 			action: 'post',
-			delay: 2000,
+			delay: 10000, //in ms
 			argumentsArray: [
 				{
 					"rq" : "list",
