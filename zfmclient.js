@@ -1,6 +1,6 @@
 var zfm = angular
 	.module("zfmClient", 
-		['ngSanitize', 'ngCookies', 'ngDialog', 'chart.js', 'angular-loading-bar']);
+		['ngSanitize', 'ngCookies', 'ngDialog', 'chart.js', 'angular-loading-bar', 'emguo.poller']);
 
 zfm.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 	cfpLoadingBarProvider.includeSpinner = false;
@@ -8,7 +8,7 @@ zfm.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.latencyThreshold = 500;
 }]);
 
-zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, ngDialog) {
+zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, ngDialog, poller) {
 	$scope.url = "zfmsvr.php";
 	
 	$scope.idxCurBM = 0;
@@ -17,6 +17,47 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	
 	$scope.spaceLabels = ["used", "free"];
 	$scope.spaceColours = ["#F38630", "#69D2E7"];
+	
+	/**
+	 * emguo.poller part
+	 */
+	var listPoller;
+	$scope.pollList = function() {
+		listPoller = poller.get($scope.url, {
+			action: 'post',
+			delay: 2000,
+			argumentsArray: [
+				{
+					"rq" : "list",
+					"bm" : $scope.idxCurBM,
+					"dir" : $scope.rlDir + "/" + $scope.dstDir
+				}
+			]
+		});
+	}
+	$scope.pollList();
+	$scope.debugCount = 0;
+	listPoller.promise.then(null, null, function(response) {
+		$scope.data1 = response.data.list;
+		
+		var files = response.data.list.files;
+		$scope.files = files;
+		$scope.files = $scope.sortJson(files, "type_name", true);
+		if ($scope.dstDir != "") {
+			$scope.rlDir = $scope.rlDir + "/" + $scope.dstDir;
+			$scope.dstDir = "";
+		}
+		$scope.rlDir = $scope.shrinkRlDir();
+		$scope.rlDirs = $scope.linkRlDir();
+		
+		$scope.space = response.data.list.space;
+		$scope.spaceData = [$scope.space.used, $scope.space.free];
+		
+		$scope.debugCount++;
+	});
+	/**
+	 * emguo.poller part end
+	 */
 	
 	/**
 	 * from local
@@ -86,31 +127,36 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		return dirs; 
 	}
 	
+	$scope.rlDir = $scope.shrinkRlDir();
 	$scope.rlDirs = $scope.linkRlDir();
 		
 	$scope.dirClick = function(dir) {
 		$scope.dstDir = dir;
 		if (dir == "..") {
 			if ($scope.rlDir == ".") {
+				$scope.dstDir = "";
 				$scope.openDialog('templates/ngDialog/commonWarning.html');
 				return false;
 			}
 		}
-		$scope.askFor("list");
+		//$scope.askFor("list");
+		$scope.pollList();
 		return true;
 	}
 	
 	$scope.bmClick = function(idxBM) {
 		$scope.idxCurBM = idxBM;
 		$scope.rlDir = ($scope.dstDir = ".");
-		$scope.askFor("list");
+		//$scope.askFor("list");
+		$scope.pollList();
 		return true;
 	}
 	
 	$scope.pathClick = function(rlDir) {
 		$scope.dstDir = "";
 		$scope.rlDir = rlDir;
-		$scope.askFor("list");
+		//$scope.askFor("list");
+		$scope.pollList();
 		return true;
 	}
 	
@@ -152,18 +198,6 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 			$scope.answers = data;
 			for (var key in data) {
 				switch (key) {
-				case 'list':
-					var files = data.list.files;
-					$scope.files = $scope.sortJson(files, "type_name", true);
-					if ($scope.dstDir != "") {
-						$scope.rlDir = $scope.rlDir + "/" + $scope.dstDir;
-					}
-					$scope.rlDir = $scope.shrinkRlDir();
-					$scope.rlDirs = $scope.linkRlDir();
-					
-					$scope.space = data.list.space;
-					$scope.spaceData = [$scope.space.used, $scope.space.free];
-					break;
 				case 'dirs':
 					var dirs = data.dirs;
 					for (var i in dirs) {
@@ -181,18 +215,12 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 			$scope.answers = data || "failed";
 			for (var key in data) {
 				switch (key) {
-				case 'list':
-					$scope.list = data.list || "failed";
+				default:
 					break;
 				}
 				break;
 			}
 		});
-	}
-	
-	$scope.ask = function() {
-		$scope.askFor($scope.rq);
-		$scope.rq = "";
 	}
 	
 	$scope.leave = function() {
@@ -217,9 +245,6 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		$window.location.href = "sign-in.html";
 		return;
 	} else {
-		$scope.rq = "dirs";
-		$scope.ask();
-		$scope.rq = "list";
-		$scope.ask();
+		$scope.askFor("dirs");
 	}
 });
