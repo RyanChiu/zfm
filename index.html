@@ -22,6 +22,7 @@
 	<script src="libs/angular-chart/Chart.js"></script>
     <script src="libs/angular-chart/angular-chart.min.js"></script>
     <script src="libs/angular-loading-bar/loading-bar.js"></script>
+    <script src="libs/angular-poller/angular-poller.js"></script>
     
 	<script src="zfmclient.js"></script>
 
@@ -110,7 +111,10 @@
 	
 	<div class="panel panel-default">
 	
-		<!-- <textarea rows="12" cols="160">{{files}}</textarea> -->
+		<!-- 
+	    <p ng-bind="debugCount"></p>
+		<textarea rows="6" cols="160">{{data1}}</textarea>
+		-->
 
 		<table class="table table-striped table-hover table-condensed"
 			ng-show="files !== undefined">
