@@ -15,7 +15,7 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	$scope.rlDir = ".";
 	$scope.dstDir = "";
 	$scope.hotFileName = "";
-	$scope.hotFileNameChanged = "";
+	$scope.hotFileNameChged = [];
 	
 	$scope.spaceLabels = ["used", "free"];
 	$scope.spaceColours = ["#F38630", "#69D2E7"];
@@ -164,9 +164,13 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		return true;
 	}
 
-	$scope.renameClick = function(name) {
+	var hotID = -1;
+	$scope.hotFileNameChged[hotID] = "";
+	$scope.renameClick = function(name, id) {
 		//alert(name);
-		$scope.hotFileName =　$scope.hotFileNameChanged = name;
+		hotID = id;
+		$scope.hotFileName =　name;
+		$scope.hotFileNameChged[hotID] = name;
 		listPoller.stop();
 	}
 	
@@ -175,7 +179,8 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		 * to do: actually send rename request to the server and deal with it
 		 */
 		$scope.askFor("rename");
-		$scope.hotFileName = $scope.hotFileNameChanged = "";
+		$scope.hotFileName = "";
+		hotID = -1;
 	}
 	
 	$scope.renameCancel = function() {
@@ -183,7 +188,8 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		 * to do: cancel rename
 		 */
 		
-		$scope.hotFileName = $scope.hotFileNameChanged = "";
+		$scope.hotFileName = "";
+		hotID = -1;
 		listPoller.start();
 	}
 	
@@ -221,7 +227,7 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 			"bm": $scope.idxCurBM,
 			"dir": $scope.rlDir + "/" + $scope.dstDir,
 			"oldname": $scope.rlDir + "/" + $scope.hotFileName,
-			"newname": $scope.rlDir + "/" + $scope.hotFileNameChanged
+			"newname": $scope.rlDir + "/" + $scope.hotFileNameChged[hotID]
 		})
 		.success(function(data, status) {
 			$scope.answers = data;// for debug

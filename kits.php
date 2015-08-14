@@ -87,6 +87,7 @@ function dir_list($dir)
 
     $dir_handle  = opendir($dir);
     $dir_objects = array();
+    $i = 1000;
     while ($object = readdir($dir_handle))
         if (!in_array($object, array('.','..')))
         {
@@ -94,6 +95,7 @@ function dir_list($dir)
             $filetype = filetype($filename);
             $filesize = sprintf("%u", filesize($filename));
             $file_object = array(
+            	'id' => $i++,
             	'name' => $object,
                 'size' => (!is_file($filename)) ? '-' : $filesize,
                 'hsize' => (!is_file($filename)) ? '-' : human_filesize($filesize),

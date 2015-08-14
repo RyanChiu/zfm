@@ -54,6 +54,7 @@ switch ($objData->rq) {
 		$dst_dir = $disk_config->dirs[$objData->bm]["path"] . "/" . $objData->dir;
 		$dir_list = dir_list($dst_dir);
 		$dir_list[] = array(
+			'id' => 0,
 			'name' => '..',
 			'size' => '-',
 			'hsize' => '-',
