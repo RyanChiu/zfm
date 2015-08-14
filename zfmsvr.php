@@ -36,8 +36,22 @@ switch ($objData->rq) {
 			$objData->rq => $disk_config->dirs
 		));
 		break;
+	case 'rename':
+		$oldname = $disk_config->dirs[$objData->bm]["path"] . "/" . $objData->oldname;
+		$newname = $disk_config->dirs[$objData->bm]["path"] . "/" . $objData->newname;
+		if (rename($oldname, $newname)) {
+			$err_rename = "";
+		} else {
+			$err_rename = "failed";
+		}
+		echo json_encode(array(
+			$objData->rq => array(
+				"error" => $err_rename
+			)
+		));
+		break;
 	case 'list':
-		$dst_dir = $disk_config->dirs[$objData->bm]["path"] . "/" . (isset($objData->dir) ? $objData->dir : "");
+		$dst_dir = $disk_config->dirs[$objData->bm]["path"] . "/" . $objData->dir;
 		$dir_list = dir_list($dst_dir);
 		$dir_list[] = array(
 			'name' => '..',

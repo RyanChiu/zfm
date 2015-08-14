@@ -14,6 +14,8 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	$scope.idxCurBM = 0;
 	$scope.rlDir = ".";
 	$scope.dstDir = "";
+	$scope.hotFileName = "";
+	$scope.hotFileNameChanged = "";
 	
 	$scope.spaceLabels = ["used", "free"];
 	$scope.spaceColours = ["#F38630", "#69D2E7"];
@@ -25,7 +27,8 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	$scope.pollList = function() {
 		listPoller = poller.get($scope.url, {
 			action: 'post',
-			delay: 10000, //in ms
+			delay: 6000, //in ms
+			smart: true,
 			argumentsArray: [
 				{
 					"rq" : "list",
@@ -35,10 +38,11 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 			]
 		});
 	}
+	
 	$scope.pollList();
 	$scope.debugCount = 0;
 	listPoller.promise.then(null, null, function(response) {
-		$scope.data1 = response.data.list;
+		$scope.data1 = response.data.list;//for debug
 		
 		var files = response.data.list.files;
 		$scope.files = files;
@@ -159,15 +163,38 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		$scope.pollList();
 		return true;
 	}
+
+	$scope.renameClick = function(name) {
+		//alert(name);
+		$scope.hotFileName =　$scope.hotFileNameChanged = name;
+		listPoller.stop();
+	}
+	
+	$scope.renameOK = function() {
+		/*
+		 * to do: actually send rename request to the server and deal with it
+		 */
+		$scope.askFor("rename");
+		$scope.hotFileName = $scope.hotFileNameChanged = "";
+	}
+	
+	$scope.renameCancel = function() {
+		/*
+		 * to do: cancel rename
+		 */
+		
+		$scope.hotFileName = $scope.hotFileNameChanged = "";
+		listPoller.start();
+	}
 	
 	$scope.colAlias = function(keyName) {
 		switch (keyName) {
-		case "name": return "Name";
-		case "hsize": return "Size";
-		case "perm": return "Permission";
-		case "type": return "Type";
-		case "time": return "Time";
-		default: return keyName;
+			case "name": return "Name";
+			case "hsize": return "Size";
+			case "perm": return "Permission";
+			case "type": return "Type";
+			case "time": return "Time";
+			default: return keyName;
 		}
 	}
 	
@@ -190,12 +217,14 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	 */
 	$scope.askFor = function(rq) {
 		$http.post($scope.url, {
-			"rq" : rq,
-			"bm" : $scope.idxCurBM,
-			"dir" : $scope.rlDir + "/" + $scope.dstDir
+			"rq": rq,
+			"bm": $scope.idxCurBM,
+			"dir": $scope.rlDir + "/" + $scope.dstDir,
+			"oldname": $scope.rlDir + "/" + $scope.hotFileName,
+			"newname": $scope.rlDir + "/" + $scope.hotFileNameChanged
 		})
 		.success(function(data, status) {
-			$scope.answers = data;
+			$scope.answers = data;// for debug
 			for (var key in data) {
 				switch (key) {
 				case 'dirs':
@@ -207,14 +236,25 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 					}
 					$scope.dirs = dirs;
 					break;
+				case 'rename':
+					if (data.rename.error == "") {
+						alert("succeed");
+					} else {
+						alert("failed");
+					}
+					listPoller.start();
+					break;
 				}
 				break;
 			}
 		})
 		.error(function(data, status) {
-			$scope.answers = data || "failed";
+			$scope.answers = data || "failed";// for debug
 			for (var key in data) {
 				switch (key) {
+				case 'rename':
+					listPoller.start();
+					break;
 				default:
 					break;
 				}
