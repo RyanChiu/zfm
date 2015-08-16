@@ -1,6 +1,11 @@
 var zfm = angular
 	.module("zfmClient", 
-		['ngSanitize', 'ngCookies', 'ngDialog', 'chart.js', 'angular-loading-bar', 'emguo.poller']);
+		[
+		 	'ngSanitize', 'ngCookies', 'ngDialog', 'ngAnimate', 
+		 	'emguo.poller',
+		 	'chart.js', 'angular-loading-bar', 'toaster'
+		]
+	);
 
 zfm.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 	cfpLoadingBarProvider.includeSpinner = false;
@@ -8,7 +13,7 @@ zfm.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.latencyThreshold = 500;
 }]);
 
-zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, ngDialog, poller) {
+zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, ngDialog, poller, toaster) {
 	$scope.url = "zfmsvr.php";
 	
 	$scope.idxCurBM = 0;
@@ -139,7 +144,8 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		if (dir == "..") {
 			if ($scope.rlDir == ".") {
 				$scope.dstDir = "";
-				$scope.openDialog('templates/ngDialog/commonWarning.html');
+				//$scope.openDialog('templates/ngDialog/commonWarning.html');
+				toaster.pop('error', "Warning", "Already the root level.");
 				return false;
 			}
 		}
@@ -244,9 +250,9 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 					break;
 				case 'rename':
 					if (data.rename.error == "") {
-						alert("succeed");
+						toaster.pop('success', "File", "renamed.");
 					} else {
-						alert("failed");
+						toaster.pop('error', "File", "not changed.");
 					}
 					listPoller.start();
 					break;
