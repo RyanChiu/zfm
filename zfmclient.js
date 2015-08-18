@@ -21,6 +21,8 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	$scope.dstDir = "";
 	$scope.hotFileName = "";
 	$scope.hotFileNameChged = [];
+	$scope.delFileName = "";
+	$scope.delFileType = "unknown";
 	
 	$scope.spaceLabels = ["used", "free"];
 	$scope.spaceColours = ["#F38630", "#69D2E7"];
@@ -193,10 +195,36 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		/*
 		 * to do: cancel rename
 		 */
-		
 		$scope.hotFileName = "";
 		hotID = -1;
 		listPoller.start();
+	}
+	
+	$scope.deleteClick = function(name, type) {
+		/*
+		 * to do: delete file(s)
+		 */
+		listPoller.stop();
+		$scope.delFileName = name;
+		$scope.delFileType = type;
+		var dialog = ngDialog.open({
+			template: 'templates/ngDialog/confirmDelete.html',
+			scope: $scope,
+			showClose: false
+		});
+		dialog.closePromise.then(function (data) {
+		    if (data.value == 1) {
+		    	//do delete
+		    	$scope.askFor("remove");
+		    	$scope.delFileName = "";
+		    	$scope.delFileType = "unknown";
+		    } else {
+		    	//cancel
+		    	$scope.delFileName = "";
+		    	$scope.delFileType = "unknown";
+		    	listPoller.start();
+		    }
+		});
 	}
 	
 	$scope.colAlias = function(keyName) {
@@ -233,7 +261,8 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 			"bm": $scope.idxCurBM,
 			"dir": $scope.rlDir + "/" + $scope.dstDir,
 			"oldname": $scope.rlDir + "/" + $scope.hotFileName,
-			"newname": $scope.rlDir + "/" + $scope.hotFileNameChged[hotID]
+			"newname": $scope.rlDir + "/" + $scope.hotFileNameChged[hotID],
+			"delname": $scope.rlDir + "/" + $scope.delFileName
 		})
 		.success(function(data, status) {
 			$scope.answers = data;// for debug
@@ -252,7 +281,15 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 					if (data.rename.error == "") {
 						toaster.pop('success', "File", "renamed.");
 					} else {
-						toaster.pop('error', "File", "not changed.");
+						toaster.pop('error', "File", "not renamed.");
+					}
+					listPoller.start();
+					break;
+				case 'remove':
+					if (data.remove.error == "") {
+						toaster.pop('success', "Object", "deleted.");
+					} else {
+						toaster.pop('error', "Object", "not deleted.");
 					}
 					listPoller.start();
 					break;
@@ -265,6 +302,9 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 			for (var key in data) {
 				switch (key) {
 				case 'rename':
+					listPoller.start();
+					break;
+				case 'remove':
 					listPoller.start();
 					break;
 				default:

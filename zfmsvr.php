@@ -50,6 +50,32 @@ switch ($objData->rq) {
 			)
 		));
 		break;
+	case 'remove':
+		$err_remove = "";
+		if (!empty($objData->delname)) {
+			$delname = $disk_config->dirs[$objData->bm]["path"] . "/" . $objData->delname;
+			if (is_file($delname) || is_link($delname)) {
+				if (unlink($delname)) {
+					$err_remove = "";
+				} else {
+					$err_remove = "failed";
+				}
+			} else if (is_dir($delname)){
+				if (delTree($delname)) {
+					$err_remove = "";
+				} else {
+					$err_remove = "failed";
+				}
+			} else {
+				
+			}
+		}
+		echo json_encode(array(
+			$objData->rq => array(
+				"error" => $err_remove
+			)
+		));
+		break;
 	case 'list':
 		$dst_dir = $disk_config->dirs[$objData->bm]["path"] . "/" . $objData->dir;
 		$dir_list = dir_list($dst_dir);
