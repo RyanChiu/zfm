@@ -3,7 +3,8 @@ var zfm = angular
 		[
 		 	'ngSanitize', 'ngCookies', 'ngDialog', 'ngAnimate', 
 		 	'emguo.poller',
-		 	'chart.js', 'angular-loading-bar', 'toaster'
+		 	'chart.js', 'angular-loading-bar', 'toaster',
+		 	'ui.bootstrap.contextMenu'
 		]
 	);
 
@@ -52,8 +53,9 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		$scope.data1 = response.data.list;//for debug
 		
 		var files = response.data.list.files;
-		$scope.files = files;
+		//$scope.files = files;
 		$scope.files = $scope.sortJson(files, "type_name", true);
+		$scope.refreshContextMenus();
 		if ($scope.dstDir != "") {
 			$scope.rlDir = $scope.rlDir + "/" + $scope.dstDir;
 			$scope.dstDir = "";
@@ -68,6 +70,28 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	});
 	/**
 	 * emguo.poller part end
+	 */
+	
+	/**
+	 * bootstrap contextMenu part start 
+	 */
+	$scope.refreshContextMenus = function() {
+		for (var obj in $scope.files) {
+			$scope.files[obj].menuOptions = [
+			    ['Rename', function($itemScope) {
+			    	//alert($itemScope.file.id);
+			    	$scope.renameClick($itemScope.file.name, $itemScope.file.id);
+			    }],
+			    null,
+			    ['Delete', function($itemScope) {
+			    	//alert($itemScope.file.name);
+			    	$scope.deleteClick($itemScope.file.name, $itemScope.file.type);
+			    }],
+			];
+		}
+	}
+	/**
+	 * bootstrap contextMenu part end 
 	 */
 	
 	/**
