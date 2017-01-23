@@ -271,8 +271,10 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 			}
 		} else if (type == "file") {
 			//return '<i class="fa fa-file-o"></i>';
+			var names = name.split(".");
+			var ext = "." + names[names.length - 1];
 			return '<img src="https://mimetypeicons-wgenial.rhcloud.com/'
-				+ name + '?size=16"/>';
+				+ ext + '?size=16"/>';
 		} else if (type == "link") {
 			return '<i class="fa fa-link"></i>';
 		}
