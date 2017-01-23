@@ -201,7 +201,7 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	$scope.renameClick = function(name, id) {
 		//alert(name);
 		hotID = id;
-		$scope.hotFileName =　name;
+		$scope.hotFileName = name;
 		$scope.hotFileNameChged[hotID] = name;
 		listPoller.stop();
 	}
@@ -270,7 +270,9 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 				return '<i class="fa fa-folder"></i>';
 			}
 		} else if (type == "file") {
-			return '<i class="fa fa-file-o"></i>';
+			//return '<i class="fa fa-file-o"></i>';
+			return '<img src="https://mimetypeicons-wgenial.rhcloud.com/'
+				+ name + '?size=16"/>';
 		} else if (type == "link") {
 			return '<i class="fa fa-link"></i>';
 		}
