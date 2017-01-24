@@ -135,7 +135,7 @@
 					<td>
 					   <form class="form-inline">
 							<span style="float: left; color: teal;"
-								ng-bind-html="getIconOfFile(file['type'], file['name'])">
+								ng-bind-html="getIconOfFile(file['type'], file['name'], file['mimetype'])">
 							</span>
 							<div ng-switch="file['type']" ng-show="hotFileName != file['name']"
 								style="float: left; margin-left: 3px;">
@@ -210,7 +210,7 @@
 				<p style="float:left;margin:0 1px 0 1px;"> object(s)</p>
 			</div>
 			<div style="float:right;">
-			© 2015 ZFM (<a href="http://glyphicons.com/">glyphicons</a>)
+			&copy; 2015 ZFM (<a href="http://glyphicons.com/">glyphicons</a>)
 			</div>
 		</div>
 	</nav>

@@ -262,7 +262,7 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 		}
 	}
 	
-	$scope.getIconOfFile = function(type, name) {
+	$scope.getIconOfFile = function(type, name, mimetype) {
 		if (type == "dir") {
 			if (name == "..") {
 				return '<i class="fa fa-level-up"></i>';
@@ -270,11 +270,11 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 				return '<i class="fa fa-folder"></i>';
 			}
 		} else if (type == "file") {
-			//return '<i class="fa fa-file-o"></i>';
-			var names = name.split(".");
-			var ext = "." + names[names.length - 1];
-			return '<img src="https://mimetypeicons-wgenial.rhcloud.com/'
-				+ ext + '?size=16"/>';
+			if (mimetype != false) {
+				var mt = mimetype.split("/");
+				return '<i class="fa fa-file-' + mt[0] + '-o"></i>';
+			} else
+				return '<i class="fa fa-file-o"></i>';
 		} else if (type == "link") {
 			return '<i class="fa fa-link"></i>';
 		}

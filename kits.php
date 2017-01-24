@@ -94,6 +94,7 @@ function dir_list($dir)
             $filename = $dir . $object;
             $filetype = filetype($filename);
             $filesize = sprintf("%u", filesize($filename));
+            $mimetype = mime_content_type($filename);
             $file_object = array(
             	'id' => $i++,
             	'name' => $object,
@@ -101,6 +102,7 @@ function dir_list($dir)
                 'hsize' => (!is_file($filename)) ? '-' : human_filesize($filesize),
                 'perm' => permission($filename),
                 'type' => $filetype,
+            	'mimetype' => $mimetype,
             	'type_name' => $filetype . '_' . $object,
                 'time' => date("Y-m-d H:i:s", filemtime($filename))
             );
