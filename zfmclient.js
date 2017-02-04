@@ -35,7 +35,7 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 	$scope.pollList = function() {
 		listPoller = poller.get($scope.url, {
 			action: 'post',
-			delay: 6000, //in ms
+			delay: 20000, //in ms
 			smart: true,
 			argumentsArray: [
 				{
@@ -267,12 +267,23 @@ zfm.controller('zfmController', function($window, $cookieStore, $scope, $http, n
 			if (name == "..") {
 				return '<i class="fa fa-level-up"></i>';
 			} else {
-				return '<i class="fa fa-folder"></i>';
+				return '<i class="fa fa-folder-o"></i>';
 			}
 		} else if (type == "file") {
 			if (mimetype != false) {
 				var mt = mimetype.split("/");
-				return '<i class="fa fa-file-' + mt[0] + '-o"></i>';
+                var iconstr_exist = "text,pdf,word,excel,powerpoint,photo,picture,image,zip,archive,sound,video,audio,movie,code";
+                if (iconstr_exist.indexOf(mt[0]) != -1) {
+    				return '<i class="fa fa-file-' + mt[0] + '-o"></i>';
+                } else if (iconstr_exist.indexOf(mt[1]) != -1) {
+                    return '<i class="fa fa-file-' + mt[1] + '-o"></i>';
+                } else if (mt[1].indexOf("zip") != -1) {
+                    return '<i class="fa fa-file-zip-o"></i>';
+                } else if (mt[1].indexOf("mp4") != -1 || mt[1].indexOf("mpeg") != -1) {
+                    return '<i class="fa fa-file-movie-o"></i>';
+                } else {
+                    return '<i class="fa fa-file-o"></i> [' + mt[0] + "," + mt[1] + "]";
+                }
 			} else
 				return '<i class="fa fa-file-o"></i>';
 		} else if (type == "link") {
